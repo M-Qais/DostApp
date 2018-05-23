@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Dost</string>
+    <string name="facebook_app_id">227726657960269</string>
+    <string name="fb_login_protocol_scheme">fb227726657960269</string>
 </resources>
