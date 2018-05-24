@@ -3,12 +3,16 @@ package com.zillion.dost;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,6 +52,9 @@ import com.rengwuxian.materialedittext.MaterialEditText;
 
 import com.zillion.dost.Model.User;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -83,6 +90,8 @@ public class RegisterationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_registeration);
 
         mCallbackManager = CallbackManager.Factory.create();
+
+
 
         init();
         Listeners();

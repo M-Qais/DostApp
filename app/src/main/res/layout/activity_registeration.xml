@@ -58,17 +58,18 @@
             android:layout_height="wrap_content"
             android:id="@+id/btn_signin"
             android:text="Sign In"
-            android:background="@drawable/btnsign_in"
-
             />
+
+        <!--android:background="@drawable/btnsign_in"-->
+
         <Button
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:id="@+id/btn_register"
             android:text="REGISTER"
-            android:background="@drawable/btn_register" />
-
+            />
+<!--android:background="@drawable/btn_register" -->
     </LinearLayout>
 
     <LinearLayout
