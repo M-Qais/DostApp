@@ -38,12 +38,10 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.iid.FirebaseInstanceIdService;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import com.zillion.dost.Model.User;
@@ -80,9 +78,11 @@ public class RegisterationActivity extends AppCompatActivity {
                 .setDefaultFontPath("fonts/arkhip.regular.ttf").
                         setFontAttrId(R.attr.fontPath).
                         build());
-        setContentView(R.layout.activity_registeration);
+        setContentView(R.layout.service_provider_registeration);
 
         mCallbackManager = CallbackManager.Factory.create();
+
+
 
         init();
         Listeners();
