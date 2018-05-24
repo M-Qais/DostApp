@@ -111,7 +111,7 @@ public class RegisterationActivity extends AppCompatActivity {
         loginThroughFb();
         //google sign in options...
         // Configure Google Sign In
-     /*   GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
@@ -123,16 +123,16 @@ public class RegisterationActivity extends AppCompatActivity {
                     }
                 })
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();*/
+                .build();
 
 
     }
 
 
-   /* private void signIn() {
+    private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleSignInClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
-    }*/
+    }
 
     //initialization for th evariables......
     public void init() {
@@ -140,7 +140,7 @@ public class RegisterationActivity extends AppCompatActivity {
         btnsignin = findViewById(R.id.btn_signin);
         btnRegister = findViewById(R.id.btn_register);
         rootlayout = findViewById(R.id.root_layout);
-//        mGooglesignin = findViewById(R.id.login_google_btn);
+        mGooglesignin = findViewById(R.id.login_google_btn);
 
     }
 
@@ -176,7 +176,7 @@ public class RegisterationActivity extends AppCompatActivity {
         // Pass the activity result back to the Facebook SDK
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
 
-       /* //for the google sign in ..
+        //for the google sign in ..
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -191,7 +191,7 @@ public class RegisterationActivity extends AppCompatActivity {
                 Log.w("googlesign_in", "Google sign in failed", e);
                 // ...
             }
-        }*/
+        }
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
@@ -289,12 +289,12 @@ public class RegisterationActivity extends AppCompatActivity {
             }
         });
         loginButton = findViewById(R.id.login_fb_button);
-    /*    mGooglesignin.setOnClickListener(new View.OnClickListener() {
+        mGooglesignin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 signIn();
             }
-        });*/
+        });
 
     }
 
