@@ -8,16 +8,13 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -45,9 +42,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.rengwuxian.materialedittext.MaterialEditText;
-
 import com.zillion.dost.Model.User;
-
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -56,9 +51,6 @@ public class RegisterationActivity extends AppCompatActivity {
     Button btnsignin;
     Button btnRegister;
     RelativeLayout rootlayout;
-    Context context;
-//    LinearLayout serviceproviderlayout;
-
     private FirebaseAuth mAuth;
     private FirebaseDatabase db;
     DatabaseReference users;
@@ -304,9 +296,6 @@ public class RegisterationActivity extends AppCompatActivity {
 
     //dialogue for the register user....
     private void showRegisterDialog() {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle("Register");
-        dialog.setMessage("Please Enter Email for Register....");
 
         LayoutInflater layoutInflater = LayoutInflater.from(this);
         final View view = layoutInflater.inflate(R.layout.layout_service_provider_register, null);
@@ -315,47 +304,54 @@ public class RegisterationActivity extends AppCompatActivity {
         final MaterialEditText edtpass = view.findViewById(R.id.etPassword);
         final MaterialEditText edtPhone = view.findViewById(R.id.etPhone);
         final MaterialEditText edtProfession = view.findViewById(R.id.etProfession);
-//     serviceproviderlayout = (LinearLayout) view.findViewById(R.id.service_provider_layout);
 
-        dialog.setView(view);
+        final AlertDialog alertDialog = new AlertDialog.Builder(RegisterationActivity.this)
+                .setView(view)
+                .setPositiveButton(android.R.string.ok, null)
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
 
-        dialog.setPositiveButton("REGISTER", new DialogInterface.OnClickListener() {
+        Button positive = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+
+        Button negative = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+
+        positive.setOnClickListener(new View.OnClickListener() {
+
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //check validation....
-                if (edtEmail.getText().toString().length() == 0) {
-//                    Snackbar.make(view, "Please enter Email Address", Snackbar.LENGTH_SHORT).show();
-                    edtEmail.setError("please enter email");
-                    return;
-//                    Toast.makeText(RegisterationActivity.this, "please enter eamil", Toast.LENGTH_SHORT).show();
-                }
-                if (edtpass.getText().toString().length() == 0) {
-                    edtpass.setError("please enter password");
-                    return;
-//                    Snackbar.make(view, "Please enter Password", Snackbar.LENGTH_SHORT).show();
-                }
-                if (edtpass.getText().toString().length() < 6) {
-//                    Snackbar.make(view, "Please enter Password of 6 characters or numbers.", Snackbar.LENGTH_SHORT);
-                    edtpass.setError("please enter password of minimum 6 characters");
-                    return;
-                }
-                if (edtusername.getText().toString().length() == 0) {
-//                    Snackbar.make(view, "Please enter UserName", Snackbar.LENGTH_SHORT).show();
-                    edtusername.setError("please enter Username");
-                    return;
-                }
-                if (edtPhone.getText().toString().length() == 0) {
-//                    Snackbar.make(view, "Please enter Phone Number", Snackbar.LENGTH_SHORT).show();
-                    edtPhone.setError("please enter phone Numebr");
-                    return;
-                }
-                if (edtProfession.getText().toString().length() == 0) {
-//                    Snackbar.make(view, "Please enter Profession", Snackbar.LENGTH_SHORT).show();
-                    edtProfession.setError("Please Enter Profession");
+            public void onClick(View view) {
+                //Do Your thing
+
+                if (TextUtils.isEmpty(edtEmail.getText().toString())) {
+                    Snackbar.make(view, "Please enter Email Address", Snackbar.LENGTH_SHORT).show();
                     return;
                 }
 
+                if (!isValidEmail(edtEmail.getText().toString())) {
+                    Snackbar.make(view, "Please enter Valid Email Address", Snackbar.LENGTH_SHORT).show();
+                    return;
+                }
 
+                if (TextUtils.isEmpty(edtusername.getText().toString())) {
+                    Snackbar.make(view, "Please enter Username", Snackbar.LENGTH_SHORT).show();
+                    return;
+                }
+                if (TextUtils.isEmpty(edtpass.getText().toString())) {
+                    Snackbar.make(view, "Please enter Password", Snackbar.LENGTH_SHORT).show();
+                    return;
+                }
+                if ((edtpass.getText().toString()).length() < 6) {
+                    Snackbar.make(view, "Please enter Password of 6 characters or numbers.", Snackbar.LENGTH_SHORT);
+                    return;
+                }
+
+                if (TextUtils.isEmpty(edtPhone.getText().toString())) {
+                    Snackbar.make(view, "Please enter Phone Number", Snackbar.LENGTH_SHORT).show();
+                    return;
+                }
+                if (TextUtils.isEmpty(edtProfession.getText().toString())) {
+                    Snackbar.make(view, "Please enter Profession", Snackbar.LENGTH_SHORT).show();
+                    return;
+                }
 
                 //register new user.....
 
@@ -394,26 +390,23 @@ public class RegisterationActivity extends AppCompatActivity {
                                 show();
                     }
                 });
-
-              /*  }
-                else {
-
-
-                    Toast.makeText(RegisterationActivity.this, "please fill the full form ...", Toast.LENGTH_SHORT).show();
-                }*/
-
             }
-
-
         });
-        dialog.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+
+        negative.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
+            public void onClick(View view) {
+                alertDialog.dismiss();
             }
         });
+    }
 
-        dialog.show();
+    public final static boolean isValidEmail(String target) {
+        if (target == null) {
+            return false;
+        } else {
+            return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+        }
     }
 
     //dialogue for login button....
