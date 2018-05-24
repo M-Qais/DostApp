@@ -8,11 +8,13 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -54,6 +56,8 @@ public class RegisterationActivity extends AppCompatActivity {
     Button btnsignin;
     Button btnRegister;
     RelativeLayout rootlayout;
+    Context context;
+//    LinearLayout serviceproviderlayout;
 
     private FirebaseAuth mAuth;
     private FirebaseDatabase db;
@@ -81,7 +85,6 @@ public class RegisterationActivity extends AppCompatActivity {
         setContentView(R.layout.service_provider_registeration);
 
         mCallbackManager = CallbackManager.Factory.create();
-
 
 
         init();
@@ -141,6 +144,7 @@ public class RegisterationActivity extends AppCompatActivity {
         btnRegister = findViewById(R.id.btn_register);
         rootlayout = findViewById(R.id.root_layout);
         mGooglesignin = findViewById(R.id.login_google_btn);
+//        serviceproviderlayout=findViewById(R.id.service_provider_layout);
 
     }
 
@@ -305,40 +309,52 @@ public class RegisterationActivity extends AppCompatActivity {
         dialog.setMessage("Please Enter Email for Register....");
 
         LayoutInflater layoutInflater = LayoutInflater.from(this);
-        View view = layoutInflater.inflate(R.layout.layout_register, null);
+        final View view = layoutInflater.inflate(R.layout.layout_service_provider_register, null);
         final MaterialEditText edtEmail = view.findViewById(R.id.etEmail);
         final MaterialEditText edtusername = view.findViewById(R.id.etName);
         final MaterialEditText edtpass = view.findViewById(R.id.etPassword);
         final MaterialEditText edtPhone = view.findViewById(R.id.etPhone);
+        final MaterialEditText edtProfession = view.findViewById(R.id.etProfession);
+//     serviceproviderlayout = (LinearLayout) view.findViewById(R.id.service_provider_layout);
 
         dialog.setView(view);
 
         dialog.setPositiveButton("REGISTER", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-
                 //check validation....
-                if (TextUtils.isEmpty(edtEmail.getText().toString())) {
-                    Snackbar.make(rootlayout, "Please enter Email Address", Snackbar.LENGTH_SHORT);
-
+                if (edtEmail.getText().toString().length() == 0) {
+//                    Snackbar.make(view, "Please enter Email Address", Snackbar.LENGTH_SHORT).show();
+                    edtEmail.setError("please enter email");
+                    return;
+//                    Toast.makeText(RegisterationActivity.this, "please enter eamil", Toast.LENGTH_SHORT).show();
                 }
-                if (TextUtils.isEmpty(edtpass.getText().toString())) {
-                    Snackbar.make(rootlayout, "Please enter Password", Snackbar.LENGTH_SHORT);
-
+                if (edtpass.getText().toString().length() == 0) {
+                    edtpass.setError("please enter password");
+                    return;
+//                    Snackbar.make(view, "Please enter Password", Snackbar.LENGTH_SHORT).show();
                 }
                 if (edtpass.getText().toString().length() < 6) {
-                    Snackbar.make(rootlayout, "Please enter Password", Snackbar.LENGTH_SHORT);
-
+//                    Snackbar.make(view, "Please enter Password of 6 characters or numbers.", Snackbar.LENGTH_SHORT);
+                    edtpass.setError("please enter password of minimum 6 characters");
+                    return;
                 }
-                if (TextUtils.isEmpty(edtusername.getText().toString())) {
-                    Snackbar.make(rootlayout, "Please enter UserName", Snackbar.LENGTH_SHORT);
-
+                if (edtusername.getText().toString().length() == 0) {
+//                    Snackbar.make(view, "Please enter UserName", Snackbar.LENGTH_SHORT).show();
+                    edtusername.setError("please enter Username");
+                    return;
                 }
-                if (TextUtils.isEmpty(edtPhone.getText().toString())) {
-                    Snackbar.make(rootlayout, "Please enter Phone Number", Snackbar.LENGTH_SHORT);
-
+                if (edtPhone.getText().toString().length() == 0) {
+//                    Snackbar.make(view, "Please enter Phone Number", Snackbar.LENGTH_SHORT).show();
+                    edtPhone.setError("please enter phone Numebr");
+                    return;
                 }
+                if (edtProfession.getText().toString().length() == 0) {
+//                    Snackbar.make(view, "Please enter Profession", Snackbar.LENGTH_SHORT).show();
+                    edtProfession.setError("Please Enter Profession");
+                    return;
+                }
+
 
 
                 //register new user.....
@@ -353,6 +369,7 @@ public class RegisterationActivity extends AppCompatActivity {
                                 user.setName(edtusername.getText().toString());
                                 user.setPassword(edtpass.getText().toString());
                                 user.setPhone(edtPhone.getText().toString());
+                                user.setProfession(edtProfession.getText().toString());
 
                                 users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).
                                         setValue(user)
@@ -378,7 +395,16 @@ public class RegisterationActivity extends AppCompatActivity {
                     }
                 });
 
+              /*  }
+                else {
+
+
+                    Toast.makeText(RegisterationActivity.this, "please fill the full form ...", Toast.LENGTH_SHORT).show();
+                }*/
+
             }
+
+
         });
         dialog.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
             @Override

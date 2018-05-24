@@ -2,14 +2,23 @@ package com.zillion.dost.Model;
 
 public class User {
 
-    private String email,password,name,phone;
+    private String email,password,name,phone,profession;
     public User(){}
 
-    public User(String email, String password, String name, String phone) {
+    public User(String email, String password, String name, String phone,String profession) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.phone = phone;
+        this.profession=profession;
+    }
+
+    public String getProfession() {
+        return profession;
+    }
+
+    public void setProfession(String profession) {
+        this.profession = profession;
     }
 
     public String getEmail() {
