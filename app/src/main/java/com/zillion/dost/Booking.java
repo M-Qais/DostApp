@@ -100,8 +100,6 @@ public class Booking extends FragmentActivity implements OnMapReadyCallback,
 
     private void startLocationUpdate() {
 
-        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION))!= PackageManager.PERMISSION_GRANTED
-                && )
     }
 
 
