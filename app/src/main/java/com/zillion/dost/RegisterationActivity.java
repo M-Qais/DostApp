@@ -43,7 +43,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.zillion.dost.Model.User;
-
 import dmax.dialog.SpotsDialog;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -320,7 +319,7 @@ public class RegisterationActivity extends AppCompatActivity {
         positive.setOnClickListener(new View.OnClickListener() {
 
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
                 //Do Your thing
 
                 if (TextUtils.isEmpty(edtEmail.getText().toString())) {
@@ -342,7 +341,7 @@ public class RegisterationActivity extends AppCompatActivity {
                     return;
                 }
                 if ((edtpass.getText().toString()).length() < 6) {
-                    Snackbar.make(view, "Please enter Password of 6 characters or numbers.", Snackbar.LENGTH_SHORT);
+                    Snackbar.make(view, "Please enter Password of 6 characters or numbers.", Snackbar.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -355,6 +354,8 @@ public class RegisterationActivity extends AppCompatActivity {
                     return;
                 }
 
+                final android.app.AlertDialog waitingdialog = new SpotsDialog(RegisterationActivity.this);
+                waitingdialog.show();
                 //register new user.....
 
                 mAuth.createUserWithEmailAndPassword(edtEmail.getText().toString(), edtpass.getText().toString())
@@ -374,13 +375,14 @@ public class RegisterationActivity extends AppCompatActivity {
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
-                                                Snackbar.make(rootlayout, "Registered Successfully", Snackbar.LENGTH_SHORT).
+                                                Snackbar.make(view, "Registered Successfully", Snackbar.LENGTH_SHORT).
                                                         show();
                                             }
                                         }).addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-                                        Snackbar.make(rootlayout, "Failed" + e.getMessage(), Snackbar.LENGTH_SHORT).
+                                        waitingdialog.dismiss();
+                                        Snackbar.make(view, "Failed" + e.getMessage(), Snackbar.LENGTH_SHORT).
                                                 show();
                                     }
                                 });
@@ -420,7 +422,7 @@ public class RegisterationActivity extends AppCompatActivity {
         dialog.setMessage("Please Enter Email for SignIn....");*/
 
         LayoutInflater layoutInflater = LayoutInflater.from(this);
-        View view = layoutInflater.inflate(R.layout.layout_login, null);
+        final View view = layoutInflater.inflate(R.layout.layout_login, null);
         final MaterialEditText edtlEmail = view.findViewById(R.id.etEmail);
         final MaterialEditText edtlpass = view.findViewById(R.id.etPassword);
 
@@ -439,27 +441,28 @@ public class RegisterationActivity extends AppCompatActivity {
         positivelogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(RegisterationActivity.this, "i am clicked", Toast.LENGTH_SHORT).show();
-                btnsignin.setEnabled(false);
+
+                /*Toast.makeText(RegisterationActivity.this, "i am clicked", Toast.LENGTH_SHORT).show();
+                btnsignin.setEnabled(false);*/
 
                 //check validation....
                 if (TextUtils.isEmpty(edtlEmail.getText().toString())) {
-                    Snackbar.make(rootlayout, "Please enter Email Address", Snackbar.LENGTH_SHORT);
+                    Snackbar.make(view, "Please enter Email Address", Snackbar.LENGTH_SHORT).show();
                     return;
 
                 }
                 if (TextUtils.isEmpty(edtlpass.getText().toString())) {
-                    Snackbar.make(rootlayout, "Please enter Password", Snackbar.LENGTH_SHORT);
+                    Snackbar.make(view, "Please enter Password", Snackbar.LENGTH_SHORT).show();
                     return;
 
                 }
                 if (edtlpass.getText().toString().length() < 6) {
-                    Snackbar.make(rootlayout, "Please enter Password", Snackbar.LENGTH_SHORT);
+                    Snackbar.make(view, "Please enter Password", Snackbar.LENGTH_SHORT).show();
                     return;
 
                 }
 
-                final android.app.AlertDialog waitingdialog=new SpotsDialog(RegisterationActivity.this);
+                final android.app.AlertDialog waitingdialog = new SpotsDialog(RegisterationActivity.this);
                 waitingdialog.show();
                 //Login.....
 
