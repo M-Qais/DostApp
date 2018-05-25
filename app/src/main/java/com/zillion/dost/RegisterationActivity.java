@@ -420,7 +420,7 @@ public class RegisterationActivity extends AppCompatActivity {
         dialog.setMessage("Please Enter Email for SignIn....");*/
 
         LayoutInflater layoutInflater = LayoutInflater.from(this);
-        View view = layoutInflater.inflate(R.layout.layout_login, null);
+        final View view = layoutInflater.inflate(R.layout.layout_login, null);
         final MaterialEditText edtlEmail = view.findViewById(R.id.etEmail);
         final MaterialEditText edtlpass = view.findViewById(R.id.etPassword);
 
@@ -439,12 +439,11 @@ public class RegisterationActivity extends AppCompatActivity {
         positivelogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(RegisterationActivity.this, "i am clicked", Toast.LENGTH_SHORT).show();
                 btnsignin.setEnabled(false);
 
                 //check validation....
                 if (TextUtils.isEmpty(edtlEmail.getText().toString())) {
-                    Snackbar.make(rootlayout, "Please enter Email Address", Snackbar.LENGTH_SHORT);
+                    Snackbar.make(view, "Please enter Email Address", Snackbar.LENGTH_SHORT);
                     return;
 
                 }
