@@ -43,6 +43,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.zillion.dost.Model.User;
+
+import dmax.dialog.SpotsDialog;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -413,63 +415,82 @@ public class RegisterationActivity extends AppCompatActivity {
 
     private void showLogindialog() {
 
-        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+       /* AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle("Login");
-        dialog.setMessage("Please Enter Email for SignIn....");
+        dialog.setMessage("Please Enter Email for SignIn....");*/
 
         LayoutInflater layoutInflater = LayoutInflater.from(this);
         View view = layoutInflater.inflate(R.layout.layout_login, null);
-        final MaterialEditText edtEmail = view.findViewById(R.id.etEmail);
-        final MaterialEditText edtpass = view.findViewById(R.id.etPassword);
+        final MaterialEditText edtlEmail = view.findViewById(R.id.etEmail);
+        final MaterialEditText edtlpass = view.findViewById(R.id.etPassword);
 
 
-        dialog.setView(view);
+//        dialog.setView(view);
+        final AlertDialog alertDialoglogin = new AlertDialog.Builder(RegisterationActivity.this)
+                .setView(view)
+                .setPositiveButton(android.R.string.ok, null)
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
 
-        dialog.setPositiveButton("LOGIN", new DialogInterface.OnClickListener() {
+        Button positivelogin = alertDialoglogin.getButton(AlertDialog.BUTTON_POSITIVE);
+
+        Button negativelogin = alertDialoglogin.getButton(AlertDialog.BUTTON_NEGATIVE);
+
+        positivelogin.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
+            public void onClick(View v) {
+                Toast.makeText(RegisterationActivity.this, "i am clicked", Toast.LENGTH_SHORT).show();
+                btnsignin.setEnabled(false);
 
                 //check validation....
-                if (TextUtils.isEmpty(edtEmail.getText().toString())) {
+                if (TextUtils.isEmpty(edtlEmail.getText().toString())) {
                     Snackbar.make(rootlayout, "Please enter Email Address", Snackbar.LENGTH_SHORT);
+                    return;
 
                 }
-                if (TextUtils.isEmpty(edtpass.getText().toString())) {
+                if (TextUtils.isEmpty(edtlpass.getText().toString())) {
                     Snackbar.make(rootlayout, "Please enter Password", Snackbar.LENGTH_SHORT);
+                    return;
 
                 }
-                if (edtpass.getText().toString().length() < 6) {
+                if (edtlpass.getText().toString().length() < 6) {
                     Snackbar.make(rootlayout, "Please enter Password", Snackbar.LENGTH_SHORT);
+                    return;
 
                 }
 
-
+                final android.app.AlertDialog waitingdialog=new SpotsDialog(RegisterationActivity.this);
+                waitingdialog.show();
                 //Login.....
 
-                mAuth.signInWithEmailAndPassword(edtEmail.getText().toString(), edtpass.getText().toString()).
+                mAuth.signInWithEmailAndPassword(edtlEmail.getText().toString(), edtlpass.getText().toString()).
                         addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                             @Override
                             public void onSuccess(AuthResult authResult) {
+                                waitingdialog.show();
                                 startActivity(new Intent(RegisterationActivity.this, Booking.class));
                                 finish();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+                        waitingdialog.dismiss();
                         Snackbar.make(rootlayout, "Failed : " + e.getMessage(), Snackbar.LENGTH_SHORT).
                                 show();
+                        btnsignin.setEnabled(true);
                     }
                 });
             }
         });
-        dialog.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+
+
+        negativelogin.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
+            public void onClick(View view) {
+                alertDialoglogin.dismiss();
             }
         });
 
-        dialog.show();
+
     }
 }
