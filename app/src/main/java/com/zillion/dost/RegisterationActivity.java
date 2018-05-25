@@ -1,7 +1,6 @@
 package com.zillion.dost;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -13,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -51,7 +49,6 @@ public class RegisterationActivity extends AppCompatActivity {
 
     Button btnsignin;
     Button btnRegister;
-    RelativeLayout rootlayout;
     private FirebaseAuth mAuth;
     private FirebaseDatabase db;
     DatabaseReference users;
@@ -105,25 +102,24 @@ public class RegisterationActivity extends AppCompatActivity {
         db = FirebaseDatabase.getInstance();
         users = db.getReference("Users");
         loginThroughFb();
+
         //google sign in options...
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
+
         mGoogleSignInClient = new GoogleApiClient.Builder(getApplicationContext()).
-                enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
-                    @Override
-                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Toast.makeText(RegisterationActivity.this, "you got some Error..", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
-
-
+            enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
+                @Override
+                public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+                    Toast.makeText(RegisterationActivity.this, "you got some Error..", Toast.LENGTH_SHORT).show();
+                }
+            })
+            .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+            .build();
     }
-
 
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleSignInClient);
@@ -132,13 +128,9 @@ public class RegisterationActivity extends AppCompatActivity {
 
     //initialization for th evariables......
     public void init() {
-
         btnsignin = findViewById(R.id.btn_signin);
         btnRegister = findViewById(R.id.btn_register);
-        rootlayout = findViewById(R.id.root_layout);
         mGooglesignin = findViewById(R.id.login_google_btn);
-//        serviceproviderlayout=findViewById(R.id.service_provider_layout);
-
     }
 
     public void loginThroughFb() {
@@ -176,6 +168,7 @@ public class RegisterationActivity extends AppCompatActivity {
         //for the google sign in ..
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
+
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 // Google Sign In was successful, authenticate with Firebase
@@ -194,30 +187,27 @@ public class RegisterationActivity extends AppCompatActivity {
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
         Log.d("check", "firebaseAuthWithGoogle:" + account.getId());
 
-//        Toast.makeText(getApplicationContext(), )
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d("check", "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w("check", "signInWithCredential:failure", task.getException());
-                            Snackbar.make(findViewById(R.id.root_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
-                            updateUI(null);
-                        }
-
-                        // ...
+            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d("check", "signInWithCredential:success");
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        updateUI(user);
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w("check", "signInWithCredential:failure", task.getException());
+                        Snackbar.make(findViewById(R.id.root_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
+                        updateUI(null);
                     }
-                });
+
+                }
+            });
 
     }
-
 
     //for handling facebook token....
     private void handleFacebookAccessToken(AccessToken token) {
@@ -225,30 +215,25 @@ public class RegisterationActivity extends AppCompatActivity {
 
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d("check", "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(RegisterationActivity.this, "Login successfull", Toast.LENGTH_SHORT).show();
-                            updateUI(user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w("check", "signInWithCredential:failure", task.getException());
-                            Toast.makeText(RegisterationActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                            updateUI(null);
-                        }
-
-                        // ...
-                    }
-                });
+            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d("check", "signInWithCredential:success");
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    Toast.makeText(RegisterationActivity.this, "Login successfull", Toast.LENGTH_SHORT).show();
+                    updateUI(user);
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w("check", "signInWithCredential:failure", task.getException());
+                    Toast.makeText(RegisterationActivity.this, "Authentication failed.",
+                            Toast.LENGTH_SHORT).show();
+                    updateUI(null);
+                }
+                }
+            });
     }
-
-    //update ui
-
 
     @Override
     public void onStart() {
@@ -261,14 +246,14 @@ public class RegisterationActivity extends AppCompatActivity {
         }
     }
 
+    //update ui
     private void updateUI(FirebaseUser user) {
+
         Toast.makeText(this, "Login successfull", Toast.LENGTH_SHORT).show();
         Intent fb_intent = new Intent(RegisterationActivity.this, Booking.class);
         startActivity(fb_intent);
 
-
     }
-
 
     //listeners
     public void Listeners() {
@@ -307,10 +292,10 @@ public class RegisterationActivity extends AppCompatActivity {
         final MaterialEditText edtProfession = view.findViewById(R.id.etProfession);
 
         final AlertDialog alertDialog = new AlertDialog.Builder(RegisterationActivity.this)
-                .setView(view)
-                .setPositiveButton(android.R.string.ok, null)
-                .setNegativeButton(android.R.string.cancel, null)
-                .show();
+            .setView(view)
+            .setPositiveButton(android.R.string.ok, null)
+            .setNegativeButton(android.R.string.cancel, null)
+            .show();
 
         Button positive = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
 
@@ -322,78 +307,84 @@ public class RegisterationActivity extends AppCompatActivity {
             public void onClick(final View view) {
                 //Do Your thing
 
-                if (TextUtils.isEmpty(edtEmail.getText().toString())) {
-                    Snackbar.make(view, "Please enter Email Address", Snackbar.LENGTH_SHORT).show();
-                    return;
-                }
+            if (TextUtils.isEmpty(edtEmail.getText().toString())) {
+                Snackbar.make(view, "Please enter Email Address", Snackbar.LENGTH_SHORT).show();
+                return;
+            }
 
-                if (!isValidEmail(edtEmail.getText().toString())) {
-                    Snackbar.make(view, "Please enter Valid Email Address", Snackbar.LENGTH_SHORT).show();
-                    return;
-                }
+            if (!isValidEmail(edtEmail.getText().toString())) {
+                Snackbar.make(view, "Please enter Valid Email Address", Snackbar.LENGTH_SHORT).show();
+                return;
+            }
 
-                if (TextUtils.isEmpty(edtusername.getText().toString())) {
-                    Snackbar.make(view, "Please enter Username", Snackbar.LENGTH_SHORT).show();
-                    return;
-                }
-                if (TextUtils.isEmpty(edtpass.getText().toString())) {
-                    Snackbar.make(view, "Please enter Password", Snackbar.LENGTH_SHORT).show();
-                    return;
-                }
-                if ((edtpass.getText().toString()).length() < 6) {
-                    Snackbar.make(view, "Please enter Password of 6 characters or numbers.", Snackbar.LENGTH_SHORT).show();
-                    return;
-                }
+            if (TextUtils.isEmpty(edtusername.getText().toString())) {
+                Snackbar.make(view, "Please enter Username", Snackbar.LENGTH_SHORT).show();
+                return;
+            }
+            if (TextUtils.isEmpty(edtpass.getText().toString())) {
+                Snackbar.make(view, "Please enter Password", Snackbar.LENGTH_SHORT).show();
+                return;
+            }
+            if ((edtpass.getText().toString()).length() < 6) {
+                Snackbar.make(view, "Please enter Password of 6 characters or numbers.", Snackbar.LENGTH_SHORT).show();
+                return;
+            }
 
-                if (TextUtils.isEmpty(edtPhone.getText().toString())) {
-                    Snackbar.make(view, "Please enter Phone Number", Snackbar.LENGTH_SHORT).show();
-                    return;
-                }
-                if (TextUtils.isEmpty(edtProfession.getText().toString())) {
-                    Snackbar.make(view, "Please enter Profession", Snackbar.LENGTH_SHORT).show();
-                    return;
-                }
+            if (TextUtils.isEmpty(edtPhone.getText().toString())) {
+                Snackbar.make(view, "Please enter Phone Number", Snackbar.LENGTH_SHORT).show();
+                return;
+            }
+            if (TextUtils.isEmpty(edtProfession.getText().toString())) {
+                Snackbar.make(view, "Please enter Profession", Snackbar.LENGTH_SHORT).show();
+                return;
+            }
 
-                final android.app.AlertDialog waitingdialog = new SpotsDialog(RegisterationActivity.this);
-                waitingdialog.show();
-                //register new user.....
+            final android.app.AlertDialog waitingdialog = new SpotsDialog(RegisterationActivity.this);
+            waitingdialog.show();
+            //register new user.....
 
-                mAuth.createUserWithEmailAndPassword(edtEmail.getText().toString(), edtpass.getText().toString())
-                        .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+            mAuth.createUserWithEmailAndPassword(edtEmail.getText().toString(), edtpass.getText().toString())
+                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult authResult) {
+
+                        //save user to db...
+                    User user = new User();
+                    user.setEmail(edtEmail.getText().toString());
+                    user.setName(edtusername.getText().toString());
+                    user.setPassword(edtpass.getText().toString());
+                    user.setPhone(edtPhone.getText().toString());
+                    user.setProfession(edtProfession.getText().toString());
+
+                    users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).
+                        setValue(user)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
-                            public void onSuccess(AuthResult authResult) {
-                                //save user to db...
-                                User user = new User();
-                                user.setEmail(edtEmail.getText().toString());
-                                user.setName(edtusername.getText().toString());
-                                user.setPassword(edtpass.getText().toString());
-                                user.setPhone(edtPhone.getText().toString());
-                                user.setProfession(edtProfession.getText().toString());
+                            public void onSuccess(Void aVoid) {
 
-                                users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).
-                                        setValue(user)
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void aVoid) {
-                                                Snackbar.make(view, "Registered Successfully", Snackbar.LENGTH_SHORT).
-                                                        show();
-                                            }
-                                        }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        waitingdialog.dismiss();
-                                        Snackbar.make(view, "Failed" + e.getMessage(), Snackbar.LENGTH_SHORT).
-                                                show();
-                                    }
-                                });
+                                Snackbar.make(view, "Registered Successfully", Snackbar.LENGTH_SHORT).show();
+
                             }
                         }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Snackbar.make(rootlayout, "Failed" + e.getMessage(), Snackbar.LENGTH_SHORT).
-                                show();
+
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+                            waitingdialog.dismiss();
+                            Snackbar.make(view, "Failed" + e.getMessage(), Snackbar.LENGTH_SHORT).show();
+                        }
+
+                    });
                     }
-                });
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+                    waitingdialog.dismiss();
+                    Snackbar.make(view, "Failed : " + e.getMessage(), Snackbar.LENGTH_SHORT).show();
+
+                }
+            });
             }
         });
 
@@ -417,22 +408,17 @@ public class RegisterationActivity extends AppCompatActivity {
 
     private void showLogindialog() {
 
-       /* AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle("Login");
-        dialog.setMessage("Please Enter Email for SignIn....");*/
-
         LayoutInflater layoutInflater = LayoutInflater.from(this);
         final View view = layoutInflater.inflate(R.layout.layout_login, null);
         final MaterialEditText edtlEmail = view.findViewById(R.id.etEmail);
         final MaterialEditText edtlpass = view.findViewById(R.id.etPassword);
 
-
 //        dialog.setView(view);
         final AlertDialog alertDialoglogin = new AlertDialog.Builder(RegisterationActivity.this)
-                .setView(view)
-                .setPositiveButton(android.R.string.ok, null)
-                .setNegativeButton(android.R.string.cancel, null)
-                .show();
+            .setView(view)
+            .setPositiveButton(android.R.string.ok, null)
+            .setNegativeButton(android.R.string.cancel, null)
+            .show();
 
         Button positivelogin = alertDialoglogin.getButton(AlertDialog.BUTTON_POSITIVE);
 
@@ -441,9 +427,6 @@ public class RegisterationActivity extends AppCompatActivity {
         positivelogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                /*Toast.makeText(RegisterationActivity.this, "i am clicked", Toast.LENGTH_SHORT).show();
-                btnsignin.setEnabled(false);*/
 
                 //check validation....
                 if (TextUtils.isEmpty(edtlEmail.getText().toString())) {
@@ -467,20 +450,20 @@ public class RegisterationActivity extends AppCompatActivity {
                 //Login.....
 
                 mAuth.signInWithEmailAndPassword(edtlEmail.getText().toString(), edtlpass.getText().toString()).
-                        addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                            @Override
-                            public void onSuccess(AuthResult authResult) {
-                                waitingdialog.show();
-                                startActivity(new Intent(RegisterationActivity.this, Booking.class));
-                                finish();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        waitingdialog.dismiss();
-                        Snackbar.make(rootlayout, "Failed : " + e.getMessage(), Snackbar.LENGTH_SHORT).
-                                show();
-                        btnsignin.setEnabled(true);
+                    addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                        @Override
+                        public void onSuccess(AuthResult authResult) {
+                            waitingdialog.show();
+                            startActivity(new Intent(RegisterationActivity.this, Booking.class));
+                            finish();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    waitingdialog.dismiss();
+                    Snackbar.make(view, "Failed : " + e.getMessage(), Snackbar.LENGTH_SHORT).
+                            show();
+                    btnsignin.setEnabled(true);
                     }
                 });
             }
