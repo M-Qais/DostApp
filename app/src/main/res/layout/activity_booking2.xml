@@ -21,6 +21,17 @@
             android:weightSum="10"
             android:padding="16dp"
             android:orientation="horizontal">
+       <Switch
+           android:id="@+id/location_switch"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_gravity="center"
+           android:layout_marginTop="20dp"
+           android:checked="true"
+           android:text="My status"
+           android:textOff="Ofline"
+           android:textOn="Online"
+           />
 
 
 
