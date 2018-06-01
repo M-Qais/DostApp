@@ -3,6 +3,7 @@ package com.zillion.dost;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -13,12 +14,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
@@ -29,6 +32,10 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -43,6 +50,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.zillion.dost.Model.User;
+
+import java.util.List;
 
 import dmax.dialog.SpotsDialog;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
@@ -62,6 +71,9 @@ public class RegisterationActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 1;
     private GoogleApiClient mGoogleSignInClient;
     private FirebaseAuth.AuthStateListener mAuthListener;
+
+
+
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -183,7 +195,7 @@ public class RegisterationActivity extends AppCompatActivity {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
 
-                Toast.makeText(getApplicationContext(), "abc", Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(), "abc", Toast.LENGTH_LONG).show();
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 Log.w("googlesign_in", "Google sign in failed", e);
@@ -210,7 +222,7 @@ public class RegisterationActivity extends AppCompatActivity {
                             // If sign in fails, display a message to the user.
                             Log.w("check", "signInWithCredential:failure", task.getException());
                             Snackbar.make(findViewById(R.id.root_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
-                            updateUI(null);
+//                            updateUI(null);
                         }
 
                         // ...
@@ -240,7 +252,7 @@ public class RegisterationActivity extends AppCompatActivity {
                             Log.w("check", "signInWithCredential:failure", task.getException());
                             Toast.makeText(RegisterationActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                            updateUI(null);
+//                            updateUI(null);
                         }
 
                         // ...
@@ -263,7 +275,7 @@ public class RegisterationActivity extends AppCompatActivity {
     }
 
     private void updateUI(FirebaseUser user) {
-        Toast.makeText(this, "Login successfull", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Login successfull", Toast.LENGTH_SHORT).show();
         Intent fb_intent = new Intent(RegisterationActivity.this, Booking.class);
         startActivity(fb_intent);
 
@@ -294,6 +306,15 @@ public class RegisterationActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+
+
+    @Override
+    public void onBackPressed() {
+        // code here to show dialog
+//        super.onBackPressed();
+        finish();
     }
 
     //dialogue for the register user....
@@ -439,21 +460,21 @@ public class RegisterationActivity extends AppCompatActivity {
         positivelogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnsignin.setEnabled(false);
+//                btnsignin.setEnabled(false);
 
                 //check validation....
                 if (TextUtils.isEmpty(edtlEmail.getText().toString())) {
-                    Snackbar.make(view, "Please enter Email Address", Snackbar.LENGTH_SHORT);
+                    Snackbar.make(view, "Please enter Email Address", Snackbar.LENGTH_SHORT).show();
                     return;
 
                 }
                 if (TextUtils.isEmpty(edtlpass.getText().toString())) {
-                    Snackbar.make(rootlayout, "Please enter Password", Snackbar.LENGTH_SHORT);
+                    Snackbar.make(view, "Please enter Password", Snackbar.LENGTH_SHORT).show();
                     return;
 
                 }
                 if (edtlpass.getText().toString().length() < 6) {
-                    Snackbar.make(rootlayout, "Please enter Password", Snackbar.LENGTH_SHORT);
+                    Snackbar.make(view, "Please enter Password", Snackbar.LENGTH_SHORT).show();
                     return;
 
                 }

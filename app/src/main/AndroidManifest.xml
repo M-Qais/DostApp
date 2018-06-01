@@ -64,8 +64,9 @@
 
         <activity
             android:name=".Booking"
-            android:label="@string/title_activity_booking" />
-        <activity android:name=".MainActivity"></activity>
+            android:label="@string/title_activity_booking"
+            />
+        <activity android:name=".MainActivity"/>
     </application>
 
 </manifest>
